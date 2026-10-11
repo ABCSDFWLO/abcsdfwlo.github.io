@@ -1,0 +1,24 @@
+{{ define "main" }}
+  {{ with .Description }}<p class="home-description">{{ . }}</p>{{ end }}
+  {{ .Content }}
+  {{ with site.Params.homeButtons }}
+    <p class="center">
+      {{ range . }}
+        <a href="{{ .url }}"><button type="button">{{ .name }}</button></a>
+      {{ end }}
+    </p>
+  {{ end }}
+  {{ $posts := site.GetPage "/posts" }}
+  {{ with $posts }}
+    <section aria-labelledby="recent-posts-heading">
+      <h2 id="recent-posts-heading">Recent Posts</h2>
+      <div class="post-list">
+        {{ range first 5 .RegularPagesRecursive.ByDate.Reverse }}
+          {{ partial "post-card.html" . }}
+        {{ else }}
+          <p>No posts yet.</p>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

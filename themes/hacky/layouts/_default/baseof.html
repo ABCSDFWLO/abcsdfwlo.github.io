@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default `ko` }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ site.Title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Noto+Sans:wght@400;700&display=swap">
+  <link rel="stylesheet" href="{{ `css/style.css` | relURL }}">
+  <script>
+    var t = localStorage.getItem('theme');
+    if (t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+  </script>
+</head>
+<body>
+  {{ partial "header.html" . }}
+  <div class="layout">
+    {{ partial "sidebar.html" . }}
+    {{ with site.GetPage "/posts" }}
+      {{ with .Sections }}
+        <div class="sidebar-resizer" role="separator" aria-label="Resize sidebar" aria-orientation="vertical" aria-valuemin="160" aria-valuemax="480" aria-valuenow="240" tabindex="0"></div>
+      {{ end }}
+    {{ end }}
+    <main{{ if and .IsPage (eq .Section "posts") }} class="post-main"{{ end }}>
+      {{ block "main" . }}{{ end }}
+    </main>
+  </div>
+  {{ partial "footer.html" . }}
+  <script src="{{ `js/main.js` | relURL }}"></script>
+</body>
+</html>

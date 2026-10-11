@@ -1,0 +1,22 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  {{ with .Sections }}
+    <ul class="group-list">
+      {{ range .ByTitle }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{ end }}
+    </ul>
+  {{ else }}
+    <section aria-labelledby="recent-posts-heading">
+      <h2 id="recent-posts-heading">Recent Posts</h2>
+      <div class="post-list">
+        {{ range first 5 $.RegularPages.ByDate.Reverse }}
+          {{ partial "post-card.html" . }}
+        {{ else }}
+          <p>No posts in this group yet.</p>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

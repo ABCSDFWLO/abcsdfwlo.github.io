@@ -1,0 +1,27 @@
+{{ $posts := site.GetPage "/posts" }}
+{{ with $posts }}
+{{ with .Sections }}
+<aside>
+  <ul class="group-nav">
+    {{ $currentSection := "" }}
+    {{ if $.IsSection }}
+      {{ $currentSection = $.RelPermalink }}
+    {{ else if $.IsPage }}
+      {{ with $.CurrentSection }}{{ $currentSection = .RelPermalink }}{{ end }}
+    {{ end }}
+    {{ range .ByTitle }}
+      <li>
+        <details{{ if eq .RelPermalink $currentSection }} open{{ end }}>
+          <summary><a href="{{ .RelPermalink }}">{{ .Title }}</a></summary>
+          <ul>
+            {{ range .RegularPages.ByDate.Reverse }}
+              <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{ end }}
+          </ul>
+        </details>
+      </li>
+    {{ end }}
+  </ul>
+</aside>
+{{ end }}
+{{ end }}

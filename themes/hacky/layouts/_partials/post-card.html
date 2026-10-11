@@ -1,0 +1,7 @@
+<article class="post-card">
+  <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+  {{ with .Date }}<p class="date">{{ .Format "2006-01-02" }}</p>{{ end }}
+  {{ $description := .Description }}
+  {{ if not $description }}{{ $description = .Summary | plainify }}{{ end }}
+  {{ with $description }}<p>{{ . | truncate 180 }}</p>{{ end }}
+</article>

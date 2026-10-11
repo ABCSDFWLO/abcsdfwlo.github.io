@@ -1,0 +1,12 @@
+{{ define "main" }}
+  <article class="post-article">
+    <h1>{{ .Title }}</h1>
+    {{ with .Date }}<p class="date">{{ .Format "2006-01-02" }}</p>{{ end }}
+    <div class="post-content">{{ .Content }}</div>
+    <div class="post-actions">
+      <hr>
+      <button id="copy-markdown" type="button">Copy Markdown</button>
+      <textarea id="post-markdown-source" hidden>{{ .RawContent }}</textarea>
+    </div>
+  </article>
+{{ end }}
