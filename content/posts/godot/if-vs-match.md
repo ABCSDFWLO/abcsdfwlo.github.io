@@ -1,6 +1,5 @@
 +++
 date = '2026-10-11T18:20:16+09:00'
-draft = true
 title = 'if vs match'
 +++
 

@@ -1,6 +1,5 @@
 +++
 date = '2026-10-11T18:49:09+09:00'
-draft = true
 title = 'Gaussian Blur'
 +++
 

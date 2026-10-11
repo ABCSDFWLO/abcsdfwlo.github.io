@@ -1,6 +1,5 @@
 +++
 date = '2026-10-08T21:51:39+09:00'
-draft = true
 title = 'RefCounted'
 +++
 

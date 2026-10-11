@@ -1,6 +1,5 @@
 +++
 date = '2026-10-11T20:06:47+09:00'
-draft = true
 title = 'ClassDB'
 +++
 

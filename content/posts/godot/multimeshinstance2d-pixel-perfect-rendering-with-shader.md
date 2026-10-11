@@ -1,6 +1,5 @@
 +++
 date = '2026-10-11T18:50:53+09:00'
-draft = true
 title = 'MultimeshInstance2D Pixel Perfect Rendering With Shader'
 +++
 
