@@ -6,7 +6,8 @@ a { color:var(--link); }
 header, footer { display:flex; justify-content:space-between; align-items:center; padding:.8rem 1.5rem; border-bottom:1px solid var(--line); }
 header h1 { margin:0; font-size:1.3rem; }
 footer { border:0; border-top:1px solid var(--line); justify-content:center; font-size:.85rem; }
-button { font:inherit; color:inherit; background:var(--soft); border:1px solid var(--line); border-radius:4px; padding:.3rem .8rem; cursor:pointer; }
+button, .action-button { font:inherit; color:inherit; background:var(--soft); border:1px solid var(--line); border-radius:4px; padding:.3rem .8rem; cursor:pointer; }
+.action-button { display:inline-block; text-decoration:none; }
 .layout { display:flex; flex:1; }
 aside { flex:0 0 var(--sidebar-width, 15rem); width:var(--sidebar-width, 15rem); min-width:0; padding:3rem 1rem 3rem 3rem; }
 .sidebar-resizer { position:relative; flex:0 0 8px; cursor:col-resize; touch-action:none; }

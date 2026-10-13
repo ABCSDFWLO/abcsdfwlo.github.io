@@ -6,6 +6,7 @@
     <div class="post-actions">
       <hr>
       <button id="copy-markdown" type="button">Copy Markdown</button>
+      {{ with .File }}<a class="action-button" href="https://github.com/ABCSDFWLO/abcsdfwlo.github.io/blame/master/content/{{ replace .Path "\\" "/" }}" target="_blank" rel="noopener noreferrer">View History</a>{{ end }}
       <textarea id="post-markdown-source" hidden>{{ .RawContent }}</textarea>
     </div>
   </article>
