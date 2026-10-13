@@ -2,11 +2,21 @@ document.getElementById('theme-toggle').onclick = () => {
   const dark = document.documentElement.classList.toggle('dark');
   localStorage.setItem('theme', dark ? 'dark' : 'light');
 };
+const linkMapEl = document.getElementById('post-link-map');
+const linkMap = linkMapEl ? JSON.parse(linkMapEl.textContent) : {};
+const resolveRelref = (target) => {
+  const key = target.replace(/^\/+/, '').replace(/^content\//, '');
+  const [path, anchor = ''] = key.split('#');
+  const url = linkMap[path] || linkMap[path.split('/').pop()];
+  return url ? url + (anchor ? '#' + anchor : '') : null;
+};
 const copyBtn = document.getElementById('copy-markdown');
 const markdownSource = document.getElementById('post-markdown-source');
 if (copyBtn) copyBtn.onclick = async () => {
   try {
     const markdown = markdownSource.value
+      .replace(/\{\{[<%]\s*(?:rel)?ref\s+(?:"([^"]+)"|'([^']+)'|`([^`]+)`)\s*[>%]\}\}/g,
+        (match, a, b, c) => resolveRelref(a ?? b ?? c) ?? match)
       .replace(/\{\{<\s*details\s+summary="([^"]*)"\s*>\}\}/g, '<details>\n<summary>$1</summary>')
       .replace(/\{\{<\s*\/details\s*>\}\}/g, '</details>');
     await navigator.clipboard.writeText(markdown);

@@ -8,6 +8,15 @@
       <button id="copy-markdown" type="button">Copy Markdown</button>
       {{ with .File }}<a class="action-button" href="https://github.com/ABCSDFWLO/abcsdfwlo.github.io/blame/master/content/{{ replace .Path "\\" "/" }}" target="_blank" rel="noopener noreferrer">View History</a>{{ end }}
       <textarea id="post-markdown-source" hidden>{{ .RawContent }}</textarea>
+      {{- $links := dict }}
+      {{- range site.RegularPages }}
+        {{- if .File }}
+          {{- $path := replace .File.Path "\\" "/" }}
+          {{- $links = merge $links (dict $path .Permalink) }}
+          {{- $links = merge (dict .File.LogicalName .Permalink) $links }}
+        {{- end }}
+      {{- end }}
+      <script type="application/json" id="post-link-map">{{ $links | jsonify | safeJS }}</script>
     </div>
   </article>
 {{ end }}
