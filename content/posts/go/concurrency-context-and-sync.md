@@ -14,6 +14,7 @@ Go에서 안전하고 견고한 동시성(Concurrency) 프로그램을 작성하
 부모 고루틴이 여러 자식 고루틴에게 "이제 작업을 중단하고 종료하라"는 취소 신호나 타임아웃을 전파하는 통로다.
 - 자식 고루틴은 `select` 문에서 `<-ctx.Done()` 채널을 감시하며 루프를 탈출한다. (`Done()`은 취소 시 닫히는 채널이며, 닫힌 채널이 모든 수신자에게 브로드캐스트되는 원리는 [채널 편]({{< relref "goroutine-and-channel.md#1-완료-신호-done-채널" >}})을 참고)
 - 채널 송수신에서 블로킹된 고루틴이 영원히 갇히지 않도록 `select`에 `ctx.Done()`을 함께 두는 패턴은 [취소 가능한 파이프라인]({{< relref "goroutine-and-channel.md#3-취소-가능한-파이프라인" >}})에 정리되어 있다.
+- `context.Context`에는 왜 `*`가 없는지, `*sync.WaitGroup` 같은 포인터 인자는 호출할 때 어떻게 전달하는지 궁금하다면 [Go의 포인터와 인터페이스 읽는 법]({{< relref "pointers-and-interfaces.md" >}})을 참고한다.
 
 ### 2) `sync.WaitGroup` (작업 카운터)
 모든 고루틴이 작업을 마칠 때까지 블로킹 대기한다.
