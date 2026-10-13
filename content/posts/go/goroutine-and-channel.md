@@ -41,7 +41,7 @@ for i := 0; i < 3; i++ {
 Go 1.22부터는 반복마다 변수가 새로 만들어져 문제가 해결되었지만, 구버전 호환이 필요하면 인자로 넘긴다.
 
 ### 4) 고루틴 누수 (Leak)
-종료되지 않고 영원히 블로킹된 고루틴은 메모리를 계속 점유한다. 대표 원인은 **아무도 받지 않는 채널에 보내기 / 아무도 닫지 않는 채널에서 받기**다. 종료 조건을 반드시 설계하고, 취소 전파는 `context`를 사용한다. 자세한 패턴은 [Context 편]({{< relref "concurrency-context-and-sync.md" >}})을 참고한다.
+종료되지 않고 영원히 블로킹된 고루틴은 메모리를 계속 점유한다. 대표 원인은 **아무도 받지 않는 채널에 보내기 / 아무도 닫지 않는 채널에서 받기**다. 종료 조건을 반드시 설계하고, 취소 전파는 `context`를 사용한다. 자세한 패턴은 [Context 편]({{< relref "concurrency-context-and-sync.md#1-contextcontext-고루틴-킬-스위치" >}})을 참고한다.
 
 ---
 
@@ -74,7 +74,7 @@ close(ch)      // 송신 측에서 닫기
 | 열린 채널 | 정상 | 정상 | 정상 |
 | 닫힌 채널 | **panic** | 남은 값을 모두 받은 뒤 제로값 + `ok=false` | **panic** |
 
-- **닫기는 송신자의 책임**이다. 수신자가 닫거나, 여러 송신자 중 하나가 닫으면 "닫힌 채널에 송신" 패닉이 발생하기 쉽다. 송신자가 여럿이면 [`sync.WaitGroup`]({{< relref "concurrency-context-and-sync.md" >}})으로 모두 끝난 뒤 한 곳에서 닫는다.
+- **닫기는 송신자의 책임**이다. 수신자가 닫거나, 여러 송신자 중 하나가 닫으면 "닫힌 채널에 송신" 패닉이 발생하기 쉽다. 송신자가 여럿이면 [`sync.WaitGroup`]({{< relref "concurrency-context-and-sync.md#2-syncwaitgroup-작업-카운터" >}})으로 모두 끝난 뒤 한 곳에서 닫는다.
 - `close`는 필수가 아니다. 수신자에게 "더 이상 값이 없다"를 알려야 할 때(`range` 등)만 필요하다.
 - `nil` 채널의 블로킹 특성은 `select`에서 특정 case를 **비활성화**하는 데 활용된다.
 
@@ -112,7 +112,7 @@ default:
 }
 ```
 - `default`가 있으면 블로킹하지 않는다. 단, `for { select { default: } }`는 CPU를 100% 소모하는 **busy loop**가 되므로 주의한다.
-- `<-ctx.Done()`은 사실 `struct{}` 채널을 `select`로 감시하는 것이며, 취소 신호를 받는 표준 방식이다. → [Context 편]({{< relref "concurrency-context-and-sync.md" >}})
+- `<-ctx.Done()`은 사실 `struct{}` 채널을 `select`로 감시하는 것이며, 취소 신호를 받는 표준 방식이다. → [Context 편]({{< relref "concurrency-context-and-sync.md#1-contextcontext-고루틴-킬-스위치" >}})
 - 루프 안의 `time.After`는 매번 타이머를 만든다. 반복 용도라면 `time.NewTimer`/`Ticker`를 재사용한다.
 
 ---
@@ -206,7 +206,7 @@ for _, task := range tasks {
 | 상황 | 권장 |
 |------|------|
 | 데이터의 **소유권 이전**, 작업 분배, 파이프라인, 이벤트/신호 | 채널 |
-| 캐시·카운터처럼 **공유 상태를 보호** | `sync.Mutex` / `sync.RWMutex` ([상세]({{< relref "concurrency-context-and-sync.md" >}})) |
+| 캐시·카운터처럼 **공유 상태를 보호** | `sync.Mutex` / `sync.RWMutex` ([상세]({{< relref "concurrency-context-and-sync.md#3-syncrwmutex-읽기쓰기-분리-락" >}})) |
 | 취소·타임아웃 전파 | `context` |
 | N개 고루틴 완료 대기 | `sync.WaitGroup` |
 
@@ -222,4 +222,4 @@ for _, task := range tasks {
 - [ ] 버퍼 크기에 근거가 있는가?
 - [ ] `go test -race`로 데이터 레이스를 점검했는가?
 
-종료 신호 전파와 공유 자원 보호, Graceful Shutdown의 통합 예제는 [Context, WaitGroup, RWMutex 편]({{< relref "concurrency-context-and-sync.md" >}})에서 이어서 확인할 수 있다.
+종료 신호 전파와 공유 자원 보호, Graceful Shutdown의 통합 예제는 [Context, WaitGroup, RWMutex 편]({{< relref "concurrency-context-and-sync.md#2-실전-통합-예제-graceful-shutdown을-지원하는-동시성-캐시-워커" >}})에서 이어서 확인할 수 있다.
