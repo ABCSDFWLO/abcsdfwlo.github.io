@@ -23,7 +23,7 @@ aside ul ul { padding-left:1rem; }
 .group-nav details ul a { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 main { flex:1; min-width:0; max-width:56rem; margin:0 auto; padding:1.5rem 2rem; }
 .post-main { display:flex; }
-.post-article { display:flex; flex:1; flex-direction:column; }
+.post-article { display:flex; flex:1; flex-direction:column; min-width:0; }
 .post-actions { margin-top:auto; }
 .post-actions hr { border:0; border-top:1px solid var(--line); }
 .center { text-align:center; }
